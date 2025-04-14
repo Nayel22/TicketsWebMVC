@@ -1,0 +1,118 @@
+﻿@model TiqueteModel
+
+@{
+    ViewData["Title"] = "Editar Ticket";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Editar Ticket #@Model.ti_identificador</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ti_identificador" />
+            <input type="hidden" asp-for="ti_fecha_adicion" />
+            <input type="hidden" asp-for="ti_adicionado_por" />
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ti_asunto" class="control-label">Asunto</label>
+                        <input asp-for="ti_asunto" class="form-control" />
+                        <span asp-validation-for="ti_asunto" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ti_ca_id" class="control-label">Categoría</label>
+                        <select asp-for="ti_ca_id" class="form-select">
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option value="@categoria.ca_identificador">@categoria.ca_nombre</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ti_ca_id" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ti_us_id_asigna" class="control-label">Asignar a</label>
+                        <select asp-for="ti_us_id_asigna" class="form-select">
+                            @foreach (var usuario in ViewBag.Usuarios)
+                            {
+                                <option value="@usuario.us_identificador">@usuario.us_nombre_completo</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ti_us_id_asigna" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ti_ur_id" class="control-label">Urgencia</label>
+                        <select asp-for="ti_ur_id" class="form-select">
+                            @foreach (var urgencia in ViewBag.Urgencias)
+                            {
+                                <option value="@urgencia.ur_identificador">@urgencia.ur_nivel</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ti_ur_id" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ti_im_id" class="control-label">Importancia</label>
+                        <select asp-for="ti_im_id" class="form-select">
+                            @foreach (var importancia in ViewBag.Importancias)
+                            {
+                                <option value="@importancia.im_identificador">@importancia.im_nivel</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ti_im_id" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="ti_estado" class="control-label">Estado</label>
+                        <select asp-for="ti_estado" class="form-select">
+                            <option value="Abierto">Abierto</option>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+                        <span asp-validation-for="ti_estado" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ti_solucion" class="control-label">Solución / Notas</label>
+                <textarea asp-for="ti_solucion" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="ti_solucion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

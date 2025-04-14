@@ -1,0 +1,63 @@
+﻿@model TiqueteModel
+
+@{
+    ViewData["Title"] = "Eliminar Ticket";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">¿Está seguro que desea eliminar este ticket?</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> Esta acción no se puede deshacer.
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h6 class="fw-bold">Ticket ID:</h6>
+                    <p>@Model.ti_identificador</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Asunto:</h6>
+                    <p>@Model.ti_asunto</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Estado:</h6>
+                    <span class="badge bg-@(Model.ti_estado == "Abierto" ? "success" :
+                                         Model.ti_estado == "En Proceso" ? "warning" :
+                                         Model.ti_estado == "Cerrado" ? "danger" : "secondary")">
+                        @Model.ti_estado
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h6 class="fw-bold">Fecha de creación:</h6>
+                    <p>@Model.ti_fecha_adicion.ToString("dd/MM/yyyy")</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Creado por:</h6>
+                    <p>@Model.ti_adicionado_por</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="mt-4">
+            <input type="hidden" asp-for="ti_identificador" />
+            <div class="form-group d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@model TiqueteModel
+
+@{
+    ViewData["Title"] = "Detalles de Ticket";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Detalles del Ticket #@Model.ti_identificador</h5>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ti_identificador" class="btn btn-light btn-sm">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="fas fa-list"></i> Volver
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h6 class="fw-bold">Asunto:</h6>
+                    <p>@Model.ti_asunto</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Estado:</h6>
+                    <span class="badge bg-@(Model.ti_estado == "Abierto" ? "success" :
+                                         Model.ti_estado == "En Proceso" ? "warning" :
+                                         Model.ti_estado == "Cerrado" ? "danger" : "secondary")">
+                        @Model.ti_estado
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Fecha de creación:</h6>
+                    <p>@Model.ti_fecha_adicion.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Creado por:</h6>
+                    <p>@Model.ti_adicionado_por</p>
+                </div>
+
+                @if (Model.ti_fecha_modificacion.HasValue)
+                {
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Última modificación:</h6>
+                        <p>@Model.ti_fecha_modificacion.Value.ToString("dd/MM/yyyy HH:mm") por @Model.ti_modificado_por</p>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <h6 class="fw-bold">Categoría:</h6>
+                    <p>@ViewBag.Categorias.FirstOrDefault(c => c.ca_identificador == Model.ti_ca_id)?.ca_nombre</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Urgencia:</h6>
+                    <p>@ViewBag.Urgencias.FirstOrDefault(u => u.ur_identificador == Model.ti_ur_id)?.ur_nivel</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Importancia:</h6>
+                    <p>@ViewBag.Importancias.FirstOrDefault(i => i.im_identificador == Model.ti_im_id)?.im_nivel</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="fw-bold">Asignado a:</h6>
+                    <p>@ViewBag.Usuarios.FirstOrDefault(u => u.us_identificador == Model.ti_us_id_asigna)?.us_nombre_completo</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Solución / Notas</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (string.IsNullOrEmpty(Model.ti_solucion))
+                        {
+                            <p class="text-muted fst-italic">No hay información de solución registrada.</p>
+                        }
+                        else
+                        {
+                            <p class="mb-0">@Model.ti_solucion</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
